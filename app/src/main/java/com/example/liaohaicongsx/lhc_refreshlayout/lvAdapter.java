@@ -12,7 +12,7 @@ import android.widget.TextView;
  */
 public class lvAdapter extends BaseAdapter {
 
-    private final int size = 15;
+    private final int size = 25;
     private String [] str = new String[size];
     private Context context;
 
