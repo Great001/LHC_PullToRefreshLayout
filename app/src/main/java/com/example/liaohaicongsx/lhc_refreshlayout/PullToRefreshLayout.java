@@ -43,6 +43,8 @@ public class PullToRefreshLayout extends LinearLayout {
 
     private int refreshState = PREPARE_REFRESH;
 
+    private OnRefreshListener onRefreshListener;
+
     public PullToRefreshLayout(Context context) {
         this(context, null);
     }
@@ -178,6 +180,28 @@ public class PullToRefreshLayout extends LinearLayout {
         return true;
     }
 
-    public void doRefresh(){}
+    public void doRefresh() {
+        if (onRefreshListener != null) {
+            onRefreshListener.onRefresh();
+        }
+    }
+
+    public void finishComplete() {
+        Toast.makeText(context, "刷新成功", Toast.LENGTH_SHORT).show();
+        headerParams.topMargin = -headerHeight;
+        headView.setLayoutParams(headerParams);
+        refreshState = FINISH_REFRESH;
+        progressBar.setVisibility(GONE);
+    }
+
+
+    public interface OnRefreshListener {
+        void onRefresh();
+    }
+
+    public void setOnRefreshLister(OnRefreshListener listener) {
+        onRefreshListener = listener;
+    }
+
 
 }
