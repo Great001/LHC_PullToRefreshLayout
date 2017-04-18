@@ -1,21 +1,44 @@
 package com.example.liaohaicongsx.lhc_refreshlayout;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PullToRefreshLayout.OnRefreshListener {
 
+    public static final int MSG_REFRESH_ERROR = 1000;
+    public static final int MSG_FINISH_REFRESH = 1002;
+
+    private PullToRefreshLayout mPrefreshlayout;
     private ListView mLvTest;
     private lvAdapter adapter;
+
+    private Handler handler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_FINISH_REFRESH:
+                    mPrefreshlayout.refreshComplete();
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mPrefreshlayout = (PullToRefreshLayout) findViewById(R.id.prfl_test);
         mLvTest = (ListView) findViewById(R.id.lv_test);
         adapter = new lvAdapter(this);
         mLvTest.setAdapter(adapter);
+        mPrefreshlayout.setOnRefreshLister(this);
 
         /*
         PackageManager packageManager = getPackageManager();
@@ -31,5 +54,10 @@ public class MainActivity extends AppCompatActivity {
         }
         */
 
+    }
+
+    @Override
+    public void onRefresh() {
+        handler.sendEmptyMessageDelayed(MSG_FINISH_REFRESH,500);
     }
 }

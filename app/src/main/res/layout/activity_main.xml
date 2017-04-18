@@ -6,6 +6,7 @@
     tools:context="com.example.liaohaicongsx.lhc_refreshlayout.MainActivity">
 
    <com.example.liaohaicongsx.lhc_refreshlayout.PullToRefreshLayout
+       android:id="@+id/prfl_test"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        android:orientation="vertical">
